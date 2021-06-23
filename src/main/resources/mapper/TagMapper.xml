@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.blog.mapper.TagMapper">
+  <resultMap id="BaseResultMap" type="com.cw.blog.eneity.Tag">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_tag
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_tag
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.cw.blog.eneity.Tag" useGeneratedKeys="true">
+    insert into t_tag (`name`)
+    values (#{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cw.blog.eneity.Tag" useGeneratedKeys="true">
+    insert into t_tag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cw.blog.eneity.Tag">
+    update t_tag
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cw.blog.eneity.Tag">
+    update t_tag
+    set `name` = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getTags" resultType="com.cw.blog.eneity.Tag">
+    select <include refid="Base_Column_List"></include> from t_tag
+  </select>
+
+  <select id="getTagByName" resultType="com.cw.blog.eneity.Tag">
+    select <include refid="Base_Column_List"></include> from t_tag where name =#{name}
+  </select>
+
+  <select id="selectTagListById" resultMap="BaseResultMap">
+    select t_tag.id,t_tag.name from t_blog_tag left join t_tag on t_blog_tag.tag_id = t_tag.id
+    where blog_id = #{id}
+  </select>
+</mapper>

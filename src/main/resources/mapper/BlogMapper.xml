@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.blog.mapper.BlogMapper">
+  <resultMap id="BaseResultMap" type="com.cw.blog.eneity.Blog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="views" jdbcType="INTEGER" property="views" />
+    <result column="appreciation" jdbcType="TINYINT" property="appreciation" />
+    <result column="sharestatement" jdbcType="TINYINT" property="sharestatement" />
+    <result column="commentabled" jdbcType="TINYINT" property="commentabled" />
+    <result column="published" jdbcType="TINYINT" property="published" />
+    <result column="recommend" jdbcType="BIGINT" property="recommend" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="type_id"  javaType="INTEGER" property="typeId"></result>
+    <result column="user_id" jdbcType="INTEGER" property="userId"></result>
+    <association property="user" javaType="com.cw.blog.eneity.User">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+      <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    </association>
+    <association property="type" javaType="com.cw.blog.eneity.Type">
+      <id column="id" property="id" jdbcType="INTEGER" ></id>
+      <result column="name" jdbcType="VARCHAR" property="name"></result>
+    </association>
+    <collection property="tags" ofType="com.cw.blog.eneity.Tag">
+      <id column="id" property="id" jdbcType="INTEGER"></id>
+      <result column="name" property="name"></result>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, content, picture, flag, views, appreciation, sharestatement, commentabled, 
+    published, recommend, createtime, updatetime,type_id,user_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_blog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_blog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.cw.blog.eneity.Blog" useGeneratedKeys="true">
+    insert into t_blog (title, content, picture, 
+      flag, views, appreciation, 
+      sharestatement, commentabled, published, 
+      recommend, createtime, updatetime
+      )
+    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT}, 
+      #{sharestatement,jdbcType=TINYINT}, #{commentabled,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, 
+      #{recommend,jdbcType=BIGINT}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cw.blog.eneity.Blog" useGeneratedKeys="true">
+    insert into t_blog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="views != null">
+        views,
+      </if>
+      <if test="appreciation != null">
+        appreciation,
+      </if>
+      <if test="sharestatement != null">
+        sharestatement,
+      </if>
+      <if test="commentabled != null">
+        commentabled,
+      </if>
+      <if test="published != null">
+        published,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="views != null">
+        #{views,jdbcType=INTEGER},
+      </if>
+      <if test="appreciation != null">
+        #{appreciation,jdbcType=TINYINT},
+      </if>
+      <if test="sharestatement != null">
+        #{sharestatement,jdbcType=TINYINT},
+      </if>
+      <if test="commentabled != null">
+        #{commentabled,jdbcType=TINYINT},
+      </if>
+      <if test="published != null">
+        #{published,jdbcType=TINYINT},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cw.blog.eneity.Blog">
+    update t_blog
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="views != null">
+        views = #{views,jdbcType=INTEGER},
+      </if>
+      <if test="appreciation != null">
+        appreciation = #{appreciation,jdbcType=TINYINT},
+      </if>
+      <if test="sharestatement != null">
+        sharestatement = #{sharestatement,jdbcType=TINYINT},
+      </if>
+      <if test="commentabled != null">
+        commentabled = #{commentabled,jdbcType=TINYINT},
+      </if>
+      <if test="published != null">
+        published = #{published,jdbcType=TINYINT},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cw.blog.eneity.Blog">
+    update t_blog
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      views = #{views,jdbcType=INTEGER},
+      appreciation = #{appreciation,jdbcType=TINYINT},
+      sharestatement = #{sharestatement,jdbcType=TINYINT},
+      commentabled = #{commentabled,jdbcType=TINYINT},
+      published = #{published,jdbcType=TINYINT},
+      recommend = #{recommend,jdbcType=BIGINT},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getBlogs" parameterType="com.cw.blog.eneity.Blog" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include> from t_blog
+    <where>
+      <if test="title != null">
+       and title like CONCAT('%',#{title},'%')
+      </if>
+      <if test="typeId != 0">
+       and  type_id = #{typeId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getBlogs1" parameterType="com.cw.blog.eneity.Blog" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include> from t_blog
+    <where>
+      <if test="title != null">
+        and title like CONCAT('%',#{title},'%')
+      </if>
+      <if test="typeId != 0">
+        and  type_id = #{typeId}
+      </if>
+    </where>
+  </select>
+</mapper>
